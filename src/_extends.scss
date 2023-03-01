@@ -1,0 +1,100 @@
+$toxic-green: rgb(20, 230, 20);
+
+%section-head {
+    margin: 0;
+    padding: 2vw;
+    font-size: 5vw;
+    @media(min-width: 576px) {
+        font-size: 4.5vw; 
+    }
+    @media(min-width: 768px) {
+        font-size: 4.3vw;
+    }
+    @media(min-width: 1200px) {
+        font-size: 2.7vw; 
+    }
+}
+
+%flex-wrapper {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 78%;
+    margin: 3px 0;
+    @media(min-width: 576px) {
+        width: 70%;
+        margin: 5px 0;
+    }
+    @media(min-width: 768px) {
+        width: 65%; 
+    }
+    @media(min-width: 992px) {
+        width: 63%; 
+    }
+    @media(min-width: 1200px) {
+        width: 40%;
+        margin: 10px 3.7vw;
+    }
+}
+
+%labels {
+    margin: 0;
+    font-size: 4vw;
+    @media(min-width: 576px) {
+        font-size: 3.55vw;
+    }
+    @media(min-width: 768px) {
+        font-size: 3.45vw; 
+    }
+    @media(min-width: 1200px) {
+        font-size: 2vw; 
+    }
+    @media(min-width: 1400px) {
+        font-size: 1.9vw; 
+    }
+}
+
+%inputs {
+    font-size: 5vw;
+    font-weight: bold;
+    line-height: 1.2;
+    text-align: start;
+    width: 38vw;
+    box-sizing: border-box;
+    background-color: black;
+    color: $toxic-green;
+    border-radius: 5px;
+    margin: 2px;
+    outline: none;
+    border: none;
+    &:focus {
+        margin: 0;
+        border: 2px solid $toxic-green;
+    }
+    @media(min-width: 576px) {
+        width: 33vw;
+        font-size: 4.5vw; 
+    }
+    @media(min-width: 768px) {
+        width: 28vw;
+        font-size: 3.85vw; 
+    }
+    @media(min-width: 992px) {
+        border-radius: 7px;
+    }
+    @media(min-width: 1200px) {
+        width: 17.8vw;
+        font-size: 2.4vw; 
+    }
+    @media(min-width: 1400px) {
+        width: 15.7vw;
+        font-size: 2.12vw; 
+    }
+}
+
+%inputs-padding {
+    padding: 1px 2px 1px 6px;
+    @media(min-width: 768px) {
+        padding: 1px 2px 1px 7px; 
+    }
+}
