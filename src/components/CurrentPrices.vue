@@ -14,8 +14,9 @@
         </div>
         <div class="btn-wrapper">
             <MyButton @click="addCurMod = true">Add Currency</MyButton>
-            <myButton id="update-btn" :class="{'disabled-button': disabledUpdate}" @click="update">Update</myButton>
-            
+            <myButton id="update-btn" :class="{'disabled-button': disabledUpdate}" @click="update">
+                Update <span v-if="disabledUpdate">{{ timer }}</span>
+            </myButton>
         </div>
         <AddCurModal v-if="addCurMod" @currencySelected="addCurrency" @pressClose="addCurMod = false"/>
     </article>
@@ -41,7 +42,8 @@ export default {
             prices: [],
             curError: false,
             addCurMod: false,
-            disabledUpdate: false
+            disabledUpdate: false,
+            timer: 5
         }
     },
     mounted() {
@@ -167,6 +169,11 @@ export default {
             const btn = document.querySelector('#update-btn')
             btn.disabled = true
             this.disabledUpdate = true
+            let t = 4
+            setInterval(() => {
+                this.timer =  t
+                t--
+            }, 1000)
             setTimeout(this.anableBtn, 5000, btn)
         },
         anableBtn(btn) {
