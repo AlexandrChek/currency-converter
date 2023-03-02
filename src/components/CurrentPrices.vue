@@ -9,7 +9,9 @@
     <article>
         <h5>Target Currencies</h5>
         <div v-for="item in prices" :key="item" class="target">
-            <p class="target-item">{{ item.currency }} in {{ baseCurrency }}</p>
+            <p class="target-item" :class="{'added': added.includes(item.currency)}" @click="showDelModal(item.currency)">
+                {{ item.currency }} in {{ baseCurrency }}
+            </p>
             <div class="price">{{ item.price }}</div>
         </div>
         <div class="btn-wrapper">
@@ -19,18 +21,21 @@
             </myButton>
         </div>
         <AddCurModal v-if="addCurMod" @currencySelected="addCurrency" @pressClose="addCurMod = false"/>
+        <DelModal v-if="delCurMod" :toDel="toDel" @removePressed="delCurrency" @pressClose="delCurMod = false"/>
     </article>
 </template>
 
 <script>
 import MyButton from './MyButton.vue'
 import AddCurModal from './AddCurModal.vue'
+import DelModal from './DelModal.vue'
 
 export default {
     name: 'CurrentPrices',
     components: {
         MyButton,
-        AddCurModal
+        AddCurModal,
+        DelModal
     },
     data() {
         return {
@@ -40,10 +45,13 @@ export default {
             targetCurrencies: ['USD', 'EUR', 'UAH'],
             targetCrypto: [['BTC', 90], ['ETH', 80]],
             prices: [],
+            added: [],
             curError: false,
             addCurMod: false,
             disabledUpdate: false,
-            timer: 5
+            timer: 5,
+            toDel: '',
+            delCurMod: false
         }
     },
     mounted() {
@@ -53,17 +61,17 @@ export default {
     methods: {
         checkAddedCur() {
             if (localStorage.getItem('addedCurrencies')) {
-                let added = JSON.parse(localStorage.getItem('addedCurrencies'))
+                this.added = JSON.parse(localStorage.getItem('addedCurrencies'))
                 const cryptoMap = new Map(this.$store.state.crypto)
-                if (added.length === 1) {
-                    let item = added[0]
+                if (this.added.length === 1) {
+                    let item = this.added[0]
                     if (cryptoMap.has(item)) {
                         this.addSavedCrypto(cryptoMap, item)
                     } else {
                         this.targetCurrencies.push(item)
                     }
                 } else {
-                    added.forEach(e => {
+                    this.added.forEach(e => {
                         if (cryptoMap.has(e)) {
                             this.addSavedCrypto(cryptoMap, e)
                         } else {
@@ -130,6 +138,7 @@ export default {
             const initialCryptoMap = new Map(this.targetCrypto)
             const initialCurSet = new Set(this.targetCurrencies)
             if (!initialCryptoMap.has(cur) && !initialCurSet.has(cur)) {
+                this.added.push(cur)
                 if (cryptoMap.has(cur)) {
                     let code = cryptoMap.get(cur)
                     let url = "https://api.coinlore.net/api/ticker/?id=" + code
@@ -179,6 +188,21 @@ export default {
         anableBtn(btn) {
             btn.disabled = false
             this.disabledUpdate = false
+        },
+        showDelModal(cur) {
+            if (this.added.includes(cur)) {
+                this.toDel = cur
+                this.delCurMod = true
+            }
+        },
+        delCurrency(cur) {
+            let ind
+            this.prices.forEach((e, i) => {
+                if (e.currency === cur) {
+                    ind = i
+                }
+            })
+            this.prices.splice(ind, 1)
         }
     }
 }
@@ -207,6 +231,13 @@ label, .target-item {
     @extend %labels;
     @media(min-width: 1200px) {
         margin-right: 4vw;
+    }
+}
+.added {
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover {
+        opacity: .8;
     }
 }
 select {
