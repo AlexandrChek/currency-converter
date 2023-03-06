@@ -1,4 +1,11 @@
-# llc
+# ![FR](/dist/fav.png) Light Currency Converter
+
+## Description
+
+### **It is a responsive and fully adaptive web application (SPA), built on mobile first technology, based on Vue-cli 3 & API requests. It is a currency and cryptocurrency converter.**
+
+***
+<br/>
 
 ## Project setup
 ```

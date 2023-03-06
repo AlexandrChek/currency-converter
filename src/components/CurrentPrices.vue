@@ -12,7 +12,7 @@
             <p class="target-item" :class="{'added': added.includes(item.currency)}" @click="showDelModal(item.currency)">
                 {{ item.currency }} in {{ baseCurrency }}
             </p>
-            <div class="price">{{ item.price }}</div>
+            <InfoOutput>{{ item.price }}</InfoOutput>
         </div>
         <div class="btn-wrapper">
             <MyButton @click="addCurMod = true">Add Currency</MyButton>
@@ -27,6 +27,7 @@
 
 <script>
 import MyButton from './MyButton.vue'
+import InfoOutput from './InfoOutput.vue'
 import AddCurModal from './AddCurModal.vue'
 import DelModal from './DelModal.vue'
 
@@ -34,6 +35,7 @@ export default {
     name: 'CurrentPrices',
     components: {
         MyButton,
+        InfoOutput,
         AddCurModal,
         DelModal
     },
@@ -83,6 +85,7 @@ export default {
         },
         getCurPrices() {
             this.prices = []
+            let i = 1
             this.targetCurrencies.forEach(e => {
                 let url = "https://v6.exchangerate-api.com/v6/1a0696dec132d55ac8c41644/pair/" + e + "/" + this.baseCurrency + "/"
                 fetch(url)
@@ -90,17 +93,20 @@ export default {
                 .then(result => {
                     let curInBase = result.conversion_rate.toFixed(7)
                     let curObj = {}
-                    curObj.id = this.$store.state.currencies.indexOf(e)
-                    curObj.currency = e
-                    curObj.price = curInBase
-                    this.prices.push(curObj)
-                    if (e === "USD") {
+                    if (e !== this.baseCurrency) {
+                        curObj.id = this.$store.state.currencies.indexOf(e)
+                        curObj.currency = e
+                        curObj.price = curInBase
+                        this.prices.push(curObj)
+                    }
+                    if (e === 'USD') {
                         this.baseCurrencyInUsd = 1 / result.conversion_rate
+                    }
+                    if (i === this.targetCurrencies.length - 1) {
+                        this.curError = false
                         this.getCryptoPrices()
                     }
-                    if (this.prices.length === this.targetCurrencies.length + this.targetCrypto.length) {
-                        this.prices = this.prices.sort((a, b) => a.id - b.id)
-                    }
+                    i++
                 })
                 .catch(error => {
                     if (error) {
@@ -116,6 +122,7 @@ export default {
         },
         getCryptoPrices() {
             let cryptoMap = new Map(this.targetCrypto)
+            let i = 1
             cryptoMap.forEach((value, key) => {
                 let url = "https://api.coinlore.net/api/ticker/?id=" + value
                 fetch(url)
@@ -127,17 +134,17 @@ export default {
                     cryptoObj.currency = key
                     cryptoObj.price = cryptoInBase
                     this.prices.push(cryptoObj)
-                    if (this.prices.length === this.targetCurrencies.length + this.targetCrypto.length) {
+                    if (i === cryptoMap.size) {
                         this.prices = this.prices.sort((a, b) => a.id - b.id)
                     }
+                    i++
                 })
             })
         },
         addCurrency(cur) {
             const cryptoMap = new Map(this.$store.state.crypto)
             const initialCryptoMap = new Map(this.targetCrypto)
-            const initialCurSet = new Set(this.targetCurrencies)
-            if (!initialCryptoMap.has(cur) && !initialCurSet.has(cur)) {
+            if (!initialCryptoMap.has(cur) && !this.targetCurrencies.includes(cur)) {
                 this.added.push(cur)
                 if (cryptoMap.has(cur)) {
                     let code = cryptoMap.get(cur)
@@ -178,12 +185,12 @@ export default {
             const btn = document.querySelector('#update-btn')
             btn.disabled = true
             this.disabledUpdate = true
-            let t = 4
-            setInterval(() => {
-                this.timer =  t
-                t--
+            let timerId = setInterval(() => {
+                this.timer--
+                if (this.timer <= 0) {clearInterval(timerId)}
             }, 1000)
             setTimeout(this.anableBtn, 5000, btn)
+            this.timer = 5
         },
         anableBtn(btn) {
             btn.disabled = false
@@ -218,7 +225,7 @@ h4 {
     @extend %flex-wrapper;
     @media(min-width: 1200px) {
         width: 100%;
-        margin: 10px 0;
+        margin: 14px 0;
         display: flex;
         justify-content: center;
     }
@@ -243,10 +250,6 @@ label, .target-item {
 select {
     @extend %inputs;
     padding-left: 2px;
-}
-.price {
-    @extend %inputs;
-    @extend %inputs-padding;
 }
 .btn-wrapper {
     margin: 2.5vw;

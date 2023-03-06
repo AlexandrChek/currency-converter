@@ -15,7 +15,7 @@
         </div>
         <div class="scope">
             <p class="scope-label">Final scope</p>
-            <div class="final-scope">{{ finalScope }}</div>
+            <InfoOutput>{{ finalScope }}</InfoOutput>
         </div>
         <p class="restriction">
             The final scope should not exceed $10,000!
@@ -25,10 +25,14 @@
 
 <script>
 import CurrencySelector from './CurrencySelector.vue'
+import InfoOutput from './InfoOutput.vue'
 
 export default {
     name: 'CurConverter',
-    components: {CurrencySelector},
+    components: {
+        CurrencySelector,
+        InfoOutput
+    },
     data() {
         return {
             initialCurrency: 'USD',
@@ -153,10 +157,6 @@ input {
 }
 .scope-label {
     @extend %labels;
-}
-.final-scope {
-    @extend %inputs;
-    @extend %inputs-padding;
 }
 .restriction {
     font-size: 3.7vw;
