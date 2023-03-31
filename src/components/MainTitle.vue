@@ -17,7 +17,7 @@ h2 {
   @media(min-width: 576px) {
     font-size: 6.3vw; 
   }
-  @media(min-width: 576px) {
+  @media(min-width: 768px) {
     font-size: 6vw;
     padding: 12px 0 25px 0;
   }

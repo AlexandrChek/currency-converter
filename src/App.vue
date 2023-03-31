@@ -32,9 +32,7 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: sans-serif;
   text-align: center;
   font-weight: bold;
   background: linear-gradient(rgb(65, 15, 107) 5%, rgb(230, 70, 190), rgb(65, 15, 107));
