@@ -11,7 +11,7 @@
     <article>
         <div class="scope">
             <label for="initial-scope">Initial scope</label>
-            <input type="text" id="initial-scope" v-model="initialScope" @input="convert" @focus="inputFocus" @blur="inputBlur">
+            <input type="number" id="initial-scope" v-model="initialScope" @input="convert" @focus="inputFocus" @blur="inputBlur">
         </div>
         <div class="scope">
             <p class="scope-label">Final scope</p>
