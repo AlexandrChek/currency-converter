@@ -58,7 +58,7 @@ export default {
     },
     mounted() {
         this.checkAddedCur()
-        this.getCurPrices()
+        //this.getCurPrices()
     },
     methods: {
         checkAddedCur() {

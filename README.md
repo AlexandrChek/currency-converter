@@ -1,4 +1,4 @@
-# ![FR](/dist/fav.png) Light Currency Converter
+# ![FR](/dist/favicons/favicon.ico) Light Currency Converter
 
 ## Description
 
@@ -21,6 +21,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
