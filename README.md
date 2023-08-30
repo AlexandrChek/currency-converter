@@ -1,4 +1,4 @@
-# ![FR](/dist/favicons/favicon.ico) Light Currency Converter
+# ![LCC](/dist/favicons/favicon.ico) Light Currency Converter
 
 ## Description
 
